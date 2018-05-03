@@ -19,6 +19,7 @@ $app->get("/api/v1/news", function (Request $request, Response $response){
     $stmt->execute();
     $result = $stmt->fetchAll();
     return $response->withJson(["status" => "success", "data" => $result], 200);
+    // return $response->withJson($result, 200);
 });
 
 $app->get("/api/v1/news/{id}", function (Request $request, Response $response, $args){
