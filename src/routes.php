@@ -22,6 +22,27 @@ $app->get("/api/v1/news", function (Request $request, Response $response){
     // return $response->withJson($result, 200);
 });
 
+$app->get("/api/v1/news/page/{page}", function (Request $request, Response $response, $args){
+    $page = (int) $args["page"];
+    $per_page = 20;
+    $offset = ($page-1)*$per_page;
+    $sql = "SELECT * FROM news_detail ORDER BY id DESC LIMIT ".$per_page." OFFSET ".$offset;
+    $stmt = $this->db->prepare($sql);
+    $stmt->execute();
+    $result = $stmt->fetchAll();
+
+    $sql1 = "SELECT * FROM news_detail";
+    $stmt1 = $this->db->prepare($sql1);
+    $stmt1->execute();
+    $result1 = $stmt1->fetchAll();
+
+    $total = count($result1);
+
+    $total_pages = floor($total/$per_page)-1;
+    return $response->withJson(["status" => "success", "page" => $page, "per_page" => $per_page, "total_pages" => $total_pages, "total" => $total,  "data" => $result], 200);
+    // return $response->withJson($result, 200);
+});
+
 $app->get("/api/v1/news/{id}", function (Request $request, Response $response, $args){
     $id = $args["id"];
     $sql = "SELECT * FROM news_detail WHERE id=:id";
