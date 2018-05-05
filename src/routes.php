@@ -39,7 +39,14 @@ $app->get("/api/v1/news/page/{page}", function (Request $request, Response $resp
     $total = count($result1);
 
     $total_pages = floor($total/$per_page)-1;
-    return $response->withJson(["status" => "success", "page" => $page, "per_page" => $per_page, "total_pages" => $total_pages, "total" => $total,  "data" => $result], 200);
+    return $response->withJson([
+        "status" => "success", 
+        "page" => $page, 
+        "per_page" => $per_page, 
+        "total_pages" => $total_pages, 
+        "total" => $total,  
+        "data" => $result], 
+        200);
     // return $response->withJson($result, 200);
 });
 
